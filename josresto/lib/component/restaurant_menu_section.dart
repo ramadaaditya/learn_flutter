@@ -1,12 +1,25 @@
 import 'package:flutter/material.dart';
 
-class MenuItem extends StatelessWidget {
-  final String title;
-  final List<String> items;
-  const MenuItem({super.key, required this.title, required this.items});
+class RestaurantMenuSection extends StatelessWidget {
+  final List<String> foodItems;
+  final List<String> drinkItems;
+
+  const RestaurantMenuSection(
+      {super.key, required this.foodItems, required this.drinkItems});
 
   @override
   Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildMenuCategory("Foods", foodItems),
+        const SizedBox(height: 16),
+        _buildMenuCategory("Drinks", drinkItems)
+      ],
+    );
+  }
+
+  Widget _buildMenuCategory(String title, List<String> items) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

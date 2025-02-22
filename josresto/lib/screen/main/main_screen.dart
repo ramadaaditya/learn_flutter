@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:josresto/provider/nav_provider.dart';
 import 'package:josresto/screen/dashboard/dashboard_screen.dart';
+import 'package:josresto/screen/favorite/favorite_screen.dart';
 import 'package:josresto/screen/setting/setting_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +19,7 @@ class MainScreen extends StatelessWidget {
         builder: (context, value, child) {
           return switch (value.indexBottomNavBar) {
             0 => const DashboardScreen(),
+            1 => const FavoriteScreen(),
             _ => const SettingScreen()
           };
         },
@@ -30,6 +32,10 @@ class MainScreen extends StatelessWidget {
         items: const [
           BottomNavigationBarItem(
               icon: Icon(Icons.home), label: "Home", tooltip: "Home"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.favorite),
+              label: "Favorite",
+              tooltip: "Favorite"),
           BottomNavigationBarItem(
               icon: Icon(Icons.settings), label: "Setting", tooltip: "Setting")
         ],

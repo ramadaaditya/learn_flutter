@@ -42,11 +42,30 @@ class Restaurant {
           [],
       menus: json["menus"] != null
           ? Menus.fromJson(json["menus"])
-          : Menus(food: [], drinks: []), // Default Menus jika null
+          : Menus(food: [], drinks: []),
       customerReviews: (json["customerReviews"] as List<dynamic>?)
               ?.map((review) => CustomerReview.fromJson(review))
               .toList() ??
           [],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "name": name,
+      "description": description,
+      "pictureId": pictureId,
+      "city": city,
+      "address": address,
+      "rating": rating,
+      "categories": categories.isNotEmpty
+          ? categories.map((category) => category.toJson()).toList()
+          : [],
+      "menus": menus.toJson(),
+      "customerReviews": customerReviews.isNotEmpty
+          ? customerReviews.map((review) => review.toJson()).toList()
+          : [],
+    };
   }
 }

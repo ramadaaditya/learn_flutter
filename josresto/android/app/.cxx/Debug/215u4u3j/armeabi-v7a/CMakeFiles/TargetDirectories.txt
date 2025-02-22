@@ -1,0 +1,2 @@
+/home/ramada/Documents/PROJECTS/flutter/josresto/android/app/.cxx/Debug/215u4u3j/armeabi-v7a/CMakeFiles/edit_cache.dir
+/home/ramada/Documents/PROJECTS/flutter/josresto/android/app/.cxx/Debug/215u4u3j/armeabi-v7a/CMakeFiles/rebuild_cache.dir
