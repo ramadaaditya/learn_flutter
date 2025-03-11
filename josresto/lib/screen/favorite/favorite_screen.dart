@@ -15,8 +15,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   void initState() {
     super.initState();
-
-    // Load all restaurants once the screen is mounted
     Future.microtask(() {
       if (mounted) {
         context.read<DatabaseProvider>().loadAllRestaurantValue();

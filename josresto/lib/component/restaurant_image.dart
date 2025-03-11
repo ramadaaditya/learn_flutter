@@ -8,9 +8,9 @@ class RestaurantImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: imageUrl, // Pastikan tag unik untuk animasi Hero
+      tag: imageUrl,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(12), // Tambahkan border radius
+        borderRadius: BorderRadius.circular(12),
         child: Image.network(
           'https://restaurant-api.dicoding.dev/images/large/$imageUrl',
           width: double.infinity,

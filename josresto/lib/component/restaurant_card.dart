@@ -7,12 +7,15 @@ import 'package:provider/provider.dart';
 class RestaurantCard extends StatelessWidget {
   final Restaurant restaurant;
   final Function() onTap;
+  final double height;
+  final double width;
 
-  const RestaurantCard({
-    super.key,
-    required this.onTap,
-    required this.restaurant,
-  });
+  const RestaurantCard(
+      {super.key,
+      required this.onTap,
+      required this.restaurant,
+      this.height = 80,
+      this.width = 120});
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +32,11 @@ class RestaurantCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    maxHeight: 80,
-                    minHeight: 80,
-                    maxWidth: 120,
-                    minWidth: 120,
+                  constraints: BoxConstraints(
+                    maxHeight: height,
+                    minHeight: height,
+                    maxWidth: width,
+                    minWidth: width,
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
@@ -42,6 +45,15 @@ class RestaurantCard extends StatelessWidget {
                       child: Image.network(
                         'https://restaurant-api.dicoding.dev/images/small/${restaurant.pictureId}',
                         fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          height: height,
+                          width: double.infinity,
+                          color: Colors.grey[300],
+                          child: const Center(
+                            child: Icon(Icons.broken_image,
+                                size: 50, color: Colors.grey),
+                          ),
+                        ),
                       ),
                     ),
                   ),

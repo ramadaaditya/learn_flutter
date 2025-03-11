@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:josresto/data/api/api_service.dart';
 import 'package:josresto/static/restaurant_detail_result_state.dart';
+import 'package:josresto/utils/handler.dart';
 
 class RestaurantDetailProvider extends ChangeNotifier {
   final ApiService _apiService;
@@ -14,19 +15,12 @@ class RestaurantDetailProvider extends ChangeNotifier {
     try {
       _resultState = RestaurantDetailLoadingState();
       notifyListeners();
-
       final result = await _apiService.getRestaurantDetail(id);
-
-      if (result.error) {
-        _resultState = RestaurantDetailErrorState(result.message);
-        notifyListeners();
-      } else {
-        _resultState = RestaurantDetailLoadedState(result.restaurant);
-        notifyListeners();
-      }
-    } on Exception catch (e) {
-      _resultState = RestaurantDetailErrorState(e.toString());
-      notifyListeners();
+      _resultState = RestaurantDetailLoadedState(result.restaurant);
+    } catch (e) {
+      _resultState = RestaurantDetailErrorState(
+          ErrorHandler.errorHandlerMessage(e.toString()));
     }
+    notifyListeners();
   }
 }

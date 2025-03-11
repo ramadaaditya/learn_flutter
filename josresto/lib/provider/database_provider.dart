@@ -5,7 +5,13 @@ import 'package:josresto/services/sqlite_service.dart';
 class DatabaseProvider extends ChangeNotifier {
   final SqliteService _service;
 
-  DatabaseProvider(this._service);
+  DatabaseProvider(this._service) {
+    _initLoadFavorites();
+  }
+
+  Future<void> _initLoadFavorites() async {
+    await loadAllRestaurantValue();
+  }
 
   String _message = "";
   String get message => _message;
@@ -21,7 +27,6 @@ class DatabaseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// **🔹 Toggle Status Favorite**
   Future<void> toggleFavorite(Restaurant restaurant) async {
     try {
       final isFavorite =
@@ -33,20 +38,19 @@ class DatabaseProvider extends ChangeNotifier {
         await saveRestaurantValue(restaurant);
       }
 
-      await loadAllRestaurantValue(); // Perbarui daftar favorit setelah perubahan
+      await loadAllRestaurantValue();
     } catch (e) {
       _setMessage("Failed to update favorite status");
       debugPrint("Error in toggleFavorite: $e");
     }
   }
 
-  /// **🔹 Menyimpan restoran ke dalam daftar favorit**
   Future<void> saveRestaurantValue(Restaurant restaurant) async {
     try {
       final result = await _service.insertFavorite(restaurant);
       if (result > 0) {
         _setMessage("Your data is saved");
-        await loadAllRestaurantValue(); // Update daftar favorit
+        await loadAllRestaurantValue();
       } else {
         _setMessage("Failed to save your data");
       }
@@ -56,7 +60,6 @@ class DatabaseProvider extends ChangeNotifier {
     }
   }
 
-  /// **🔹 Memuat semua restoran favorit**
   Future<void> loadAllRestaurantValue() async {
     try {
       _restaurantList = await _service.getFavorites();
@@ -68,13 +71,12 @@ class DatabaseProvider extends ChangeNotifier {
     }
   }
 
-  /// **🔹 Menghapus restoran dari daftar favorit**
   Future<void> removeRestaurantValueById(String id) async {
     try {
       final result = await _service.removeItem(id);
       if (result > 0) {
         _setMessage("Your data is removed");
-        await loadAllRestaurantValue(); // Perbarui daftar favorit setelah penghapusan
+        await loadAllRestaurantValue();
       } else {
         _setMessage("Failed to remove your data");
       }

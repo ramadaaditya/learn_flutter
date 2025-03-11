@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:josresto/provider/setting_provider.dart';
+import 'package:josresto/services/local_notification_service.dart';
 import 'package:provider/provider.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -7,35 +8,34 @@ class SettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<SettingProvider>(context);
-    final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
-
+    final settingProvider = Provider.of<SettingProvider>(context);
+    final isDarkMode = settingProvider.themeMode == ThemeMode.dark;
+    final isDailyReminderActive = settingProvider.isDailyReminderActive;
+    final localNotificationService = LocalNotificationService();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ListTile(
-              leading: Icon(Icons.settings, color: Colors.grey[600]),
-              title: const Text(
-                "Settings",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const Divider(),
             SwitchListTile(
               title: const Text("Dark Mode"),
               value: isDarkMode,
               onChanged: (value) {
-                themeProvider.toggleTheme(value);
+                settingProvider.toggleTheme(value);
               },
               secondary: Icon(isDarkMode ? Icons.dark_mode : Icons.light_mode),
             ),
-            const SizedBox(height: 20),
-            const Text(
-              "More settings coming soon...",
-              style: TextStyle(fontSize: 16, color: Colors.grey),
+            SwitchListTile(
+              title: const Text("Daily Reminder Lunch"),
+              value: isDailyReminderActive,
+              onChanged: (value) async {
+                await localNotificationService.requestNotificationPermission();
+                settingProvider.toggleDailyReminder(value);
+              },
+              secondary: Icon(isDailyReminderActive
+                  ? Icons.notifications_active
+                  : Icons.notifications_off),
             ),
           ],
         ),

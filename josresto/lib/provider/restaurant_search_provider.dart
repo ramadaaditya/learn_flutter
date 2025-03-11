@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:josresto/data/api/api_service.dart';
 import 'package:josresto/static/restaurant_search_result_state.dart';
+import 'package:josresto/utils/handler.dart';
 
 class RestaurantSearchProvider extends ChangeNotifier {
   final ApiService _apiService;
@@ -20,17 +21,11 @@ class RestaurantSearchProvider extends ChangeNotifier {
       _resultState = RestaurantSearchLoadingState();
       notifyListeners();
       final result = await _apiService.getSearchRestaurant(query);
-      if (result.error) {
-        _resultState = RestaurantSearchErrorState("Error fetching data");
-      } else if (result.restaurants.isEmpty) {
-        _resultState = RestaurantSearchEmptyState();
-      } else {
-        _resultState = RestaurantSearchLoadedState(result.restaurants);
-      }
-    } on Exception catch (e) {
-      _resultState = RestaurantSearchErrorState(e.toString());
-    } finally {
-      notifyListeners();
+      _resultState = RestaurantSearchLoadedState(result.restaurants);
+    } catch (e) {
+      _resultState = RestaurantSearchErrorState(
+          ErrorHandler.errorHandlerMessage(e.toString()));
     }
+    notifyListeners();
   }
 }

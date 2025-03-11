@@ -18,7 +18,6 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    // Reset provider state saat layar diinisialisasi
     Future.microtask(() {
       if (mounted) {
         context.read<RestaurantSearchProvider>().resetSearchState();

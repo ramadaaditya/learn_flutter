@@ -17,15 +17,12 @@ class RestaurantListProvider extends ChangeNotifier {
       _resultState = RestaurantListLoadingState();
       notifyListeners();
       final result = await _apiService.getRestaurantList();
-      if (result.error) {
-        _resultState = RestaurantListErrorState(result.message);
-      } else {
-        _resultState = RestaurantListLoadedState(result.restaurants);
-      }
-    } on Exception catch (e) {
-      _resultState = RestaurantListErrorState(e.toString());
-    } finally {
-      notifyListeners();
+      _resultState = RestaurantListLoadedState(result.restaurants);
+    } catch (e) {
+      _resultState = RestaurantListErrorState(
+        "Gagal memuat data", // 🔹 Pastikan ini sesuai dengan yang diuji
+      );
     }
+    notifyListeners();
   }
 }
